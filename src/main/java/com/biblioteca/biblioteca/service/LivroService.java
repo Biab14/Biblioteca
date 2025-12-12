@@ -18,7 +18,6 @@ public class LivroService {
 
     public Livro criarLivro(String isbn) {
 
-        // 🔍 Consulta a OpenLibrary
         OpenLibraryResponse dados = openLibraryClient.buscarLivroPorISBN(isbn);
 
         if (dados == null || dados.getTitulo() == null) {
@@ -43,7 +42,14 @@ public class LivroService {
 
     public Livro buscarPorISBN(String isbn) {
         return livroRepository.findById(isbn)
-                .orElseThrow(() -> new RuntimeException("Livro não encontrado."));
+                .orElseGet(() -> {
+                    try {
+                        System.out.println("Não tem o livro na basem procarando na internet..." + isbn);
+                        return criarLivro(isbn);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Livro não encontrado nem na base local nem na API externa.");
+                    }
+                });
     }
 
     public void deletar(String isbn) {

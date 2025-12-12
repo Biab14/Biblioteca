@@ -13,7 +13,7 @@ public class BibliotecaClient {
     private final RestTemplate rest;
 
     public BibliotecaClient(String baseUrl) {
-        this.baseUrl = baseUrl;
+        this.baseUrl = "http://127.0.0.1:8080";
         this.rest = new RestTemplate();
     }
 
